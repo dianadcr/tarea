@@ -1,0 +1,171 @@
+#este codigo es para un archivo en donde se leera las vocales,consonantes, mayusculas, minusculas,signos de puntuacion,leer palabras,espacios
+#lineas, covertir a sistema hexadecimal,copiar el archivo y convertir el texto en mayusculas y minusculas
+
+import shutil, os
+
+class Archivo:
+    def __init__(self, nombre): #se crea una clase llamada archivo donde vamos a llamar nuestro texto 
+        try:
+            self.f=open(nombre, 'r')
+            self.nombre = nombre
+        except:
+            print("No se puede abrir el archivo",nombre) #se hace el try excpetion por si el archivo es invalido o falta agregar el .txt, y asi nos mandara un mensaje de error con la impresion
+            exit()
+            
+    def muestra(self): #aqui definimos la funcion muestra para que a la hora de inroducir nuestro archivo.txt nos muestre su contenido
+        i=1
+        for linea in self.f:
+            print("{:3}{}".format(i, linea),end="") #aqui enumeramos las lineas que contenga nuestro texto
+            i+=1 #se va incrementando el numero de lineas que tenga el texto
+        self.f.seek(0)    
+        
+    def cuentaVocales(self): #aqui definimos la funcion cuenta vocales
+        def vocales(s):
+            contador = 0 #nuestro contador se inicializa en 0
+            for i in range(len(s)): #definimos el rango para la contalizacion de las vocales
+                if s[i] in set("AÁaEÉeIÍiOÓoUÚuáéíóú"): #en esta parte se mete el conjunto de las vocales que va a leer 
+                    contador +=1 #el contador ira aumentando conforme va contando las vocales
+            return contador
+        
+        contador = 0
+        for linea in self.f:
+            contador +=vocales(linea)
+        self.f.seek(0)
+        return contador
+    
+    def cuentaConsonantes(self): #aqui definimos la funcion cuenta consonantes 
+        def consonantes(s):
+            contador = 0
+            for i in range(len(s)): #el contador se inicializa en cero
+                if s[i] in set("BCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz"): #se inluye el conjunto de todas las consonantes 
+                    contador +=1 
+            return contador
+        
+        contador = 0
+        for linea in self.f:
+            contador +=consonantes(linea)
+        self.f.seek(0)
+        return contador
+    
+    def cuentaMinusculas(self): #definimos la funcion cuenta minusculas
+        def minusculas(s): #aqui definimos esta funcion para que vaya haciendo la suma de contar las minusculas
+            contador = 0 #nuestro contador se inicializa en 0
+            for i in range(len(s)): #el rango es para contar el numero de palabras infinitas que contenga nuestro archivo
+                if s[i] in set("aeiouáéíóúbcdfghjklmnpqrstvwxyz"): # se mete el conjunto de todas las letras cononantes 
+                    contador +=1 # nuestro contador ira incrementando conforme vaya contado las letras
+            return contador
+        
+        contador = 0
+        for linea in self.f: # para nuestras lineas debera ir leyendo una por una
+            contador +=minusculas(linea) #lee todas las lineas hasta acabar con la lectura del archivo y darnos el total de las letras minusculas
+        self.f.seek(0)
+        return contador
+    
+    def cuentaMayusculas(self): # definimos nuestra funcion cuenta mayusculas
+        def mayusculas(s): #se define esta funcion para que vaya haciendo la suma de las letras mayusculas 
+            contador = 0 # nuestro contodaor se inicializa en 0
+            for i in range(len(s)): # nuestro rango es para contar el numero de palabras infinitas que contenga nuestro archivo 
+                if s[i] in set("AÁBCDEÉFGHIÍJKLMNOÓPQRSTUÚVWXYZ"): #se incluye el conjunto de todas las letras en mayusculas 
+                    contador +=1 #nuestro contador ira incrementando conforme vaya contando las letras
+            return contador
+        
+        contador = 0
+        for linea in self.f: #para nuestras lineas debera ir leyendo una por una 
+            contador +=mayusculas(linea) #lee todas las lineas hasta acabar con la lectura del archivo y darnos el total de las letras mayusculas
+        self.f.seek(0)
+        return contador
+    
+    def cuentaSignos(self): #definimos las funcion cuenta signos
+        def signos(s): #definimos esta funcion para que vaya haciendo la suma de los signos de puntuacion
+            contador = 0 #nuestro contador se inicializa en 0
+            for i in range(len(s)): #nuestro rango es para contar el numero de palabras infinitas que contenga nuestro archivo
+                if s[i] in set(",;:!¡?¿''.-_"): #se incluye el conjunto de todoas los signos de puntuacion
+                    contador +=1 #nuestro contador ira incrementando conforme vaya contando las letras
+            return contador
+        
+        contador = 0
+        for linea in self.f: #para nuestras lineas debera ir leyendo una por una
+            contador +=signos(linea) #lee todas las lineas hasta acabar con la lectura del archivo y darnos el total de los signos de puntuacion
+        self.f.seek(0)
+        return contador
+    
+    def cuentaEspacios(self): #se define la funcion cuenta espacios
+        def espacios(s): #definimos esta funcion para que vaya haciendo la suma de los espacios que tenga nuestro archivo 
+            contador = 0 #nuestro contador se inicializa en 0 
+            for i in range(len(s)): #nuestro rango es para contar el numero de epacios que contenga nuestro archivo
+                if s[i] in set(" "): #solo se define la variable espacio
+                    contador +=1 # nuestro contador ira incrementando conforme vaya encontrando los espacios 
+            return contador
+        
+        contador = 0
+        for linea in self.f: #para la lectura de las lineas ira contando una por una 
+            contador +=espacios(linea) #lee todas las lineas hasta acabar con la lectura del archivo y darnos el total de los espacios 
+        self.f.seek(0)
+        return contador
+    
+    def cuentaLineas(self): #se define nuestra funcion cuenta lineas
+        contador = 0 #nuestro contador se define en 0
+        for linea in self.f: #hace el conteo de nuestras linea que tenga el archivo 
+            contador +=1 #nuestro contador ira incrementando de acuerdo a las lineas que tenga el texto
+        self.f.seek(0)
+        return contador
+    
+    def cuentaPalabras(self): #se define la funcion cuenta palabras
+        def palabras(s): #se define esta funcion para hacer el calculo de las palabras
+            contador = 0 #nuestro contador de inicializa en 0 
+            for i in range(len(s)): #nuestro rango es para contar el total de las palabras que tenga el texto
+                if s[i] in set("([a-z])"): #se define el conjunto del abecedario 
+                    contador += 1 #el contador ira incrementando conforme vaya contando las palabras
+            return contador
+        
+        contador = 0
+        for linea in self.f: #para la lectura de las lineas see ira contando una por una 
+            contador +=palabras(linea) #nuestro contador ira leyendo las palabras que tenga el texto para darnos el total
+        self.f.seek(0)
+        return contador
+    
+    def convertirMinusculas(self): #se define la funcion convertir a minusculas
+        contador = "" #nuestro contador leera el texto
+        for linea in self.f: #leera las lineas que tenga el texto
+            contador +=linea.lower() #se hace el contador para ir conviertiendo las letras mayusculas a minusculas
+        self.f.seek(0)
+        return contador
+    
+    def convertirMayusculas(self): #se define la funcion convertir a mayusculas
+        contador = "" #nuestro contador leera el texto
+        for linea in self.f: #leera las lineas que contenga el texto
+            contador +=linea.upper() #se hace el contador para ir convirtiendo las letras minusculas a mayusculas
+        self.f.seek(0)
+        return contador
+    
+    def convertirHexadecimal(self): #se define la funcion convertir a hexadecimal
+        h = [] #definimos nuestra lista vacia 
+        def d(s): #definimos de para la lectura del texto
+            for i in range(len(s)): #nuestro rango leera las palabras que tenga nuestro texto
+                h.append(hex(ord(s[i]))) #se hace una lista del archivo de texto y lo va conviertiendo a hexadecimal
+                
+        for linea in self.f: #lee el texto
+            d(linea) #convierte el texto a hexadecimal y lo muestra en forma de lista
+        print(h)
+        self.f.seek(0)
+        
+    def copiar(self, copia): #se hace la funcion para copiar el archivo
+        shutil.copy(self.f.name, copia) #al crear la copia la guarda en la carpeta donde esta el texto original
+        
+        
+#nuestro menu principal donde se llama nuestras funciones     
+nomb = input('Nombre del archivo:')
+archivo = Archivo(nomb)
+archivo.muestra()
+print("\nEl numero de vocales es: ", archivo.cuentaVocales())
+print("\nEl numero de consonantes es: ", archivo.cuentaConsonantes())
+print("\nEl numero de minusculas es: ", archivo.cuentaMinusculas())
+print("\nEl numero de mayusculas es: ", archivo.cuentaMayusculas())
+print("\nEl numero de signos de puntuacion es: ", archivo.cuentaSignos())
+print("\nEl numero de espacios es: ", archivo.cuentaEspacios())
+print("\nEl numero de lineas es: ", archivo.cuentaLineas())
+print("\nEl numero de palabras es: ", archivo.cuentaEspacios()+1)
+print("\nConvierte a minusculas: ", archivo.convertirMinusculas())
+print("\nConvierte a mayusculas: ", archivo.convertirMayusculas())
+print("\nConvierte a hexadecimal: ", archivo.convertirHexadecimal())
+print("\nArchivo Copiado: ", archivo.copiar("copia.txt"))
